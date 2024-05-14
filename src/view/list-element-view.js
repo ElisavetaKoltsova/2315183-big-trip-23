@@ -4,7 +4,6 @@ import AbstractView from '../framework/view/abstract-view.js';
 import dayjs from 'dayjs';
 
 function createDateElementTemplate(timeFrom, timeTo, totalDuraction) {
-
   return (`
   <div class="event__schedule">
         <p class="event__time">
@@ -14,6 +13,14 @@ function createDateElementTemplate(timeFrom, timeTo, totalDuraction) {
         </p>
         <p class="event__duration">${totalDuraction}</p>
       </div>`);
+}
+
+function createOffersTemplate(offers) {
+  return Object.entries(offers).map((offer) => (`<li class="event__offer">
+    <span class="event__offer-title">${offer[1].name}</span>
+    &plus;&euro;&nbsp;
+    <span class="event__offer-price">${offer[1].price}</span>
+    </li>`)).join('');
 }
 
 function createFavoriteButtonTemplate(isFavorite) {
@@ -26,7 +33,7 @@ function createFavoriteButtonTemplate(isFavorite) {
 }
 
 function createListElementTemplate(listElement) {
-  const {dueDate, event, place, time, price, isFavorite} = listElement;
+  const {dueDate, event, place, time, price, isFavorite, offers} = listElement;
 
   const date = humanizeDueDate(dueDate, DateFormat.DAY_EVENT);
   const timeFrom = humanizeDueDate(time.from, DateFormat.TIME);
@@ -56,6 +63,7 @@ function createListElementTemplate(listElement) {
       <h4 class="visually-hidden">Offers:</h4>
 
       <ul class="event__selected-offers">
+        ${createOffersTemplate(offers)}
       </ul>
 
       ${createFavoriteButtonTemplate(isFavorite)}
